@@ -26,10 +26,8 @@ public class Main {
 		moduleGenes.add("G_2");
 		moduleGenes.add("G_3");
 		moduleGenes.add("G_4");
-		calculateCenter(moduleGenes, 5.0);
-		
-		
-		
+		calculateCenter(moduleGenes, SN);
+	
 	}
 	
 	private static void runGRAM() {
