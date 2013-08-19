@@ -45,8 +45,10 @@ public class Main {
 				HashSet<String> genes_G = getGenesForTFs(tf_F, p1);
 				int n = genes_G.size();
 				double sn = SN; //deal with calculating this later
-				double[] c = calculateCenter(genes_G);
-				HashSet<String> genes_M; //= getGenesFor
+				double[] c = calculateCenter(genes_G, sn);
+				HashSet<String> genes_M; // finish implementig this part 
+			
+				
 				
 			}
 		}
