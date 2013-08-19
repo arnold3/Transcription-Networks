@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +36,7 @@ public class Main {
 	private static void runGRAM() {
 		HashSet<HashSet<String>> exploredTfSets = new HashSet<HashSet<String>>();
 		HashSet<String> completedGenes = new HashSet<String>();
+		HashMap<HashSet<String>, HashSet<String>> completedModules = new HashMap<HashSet<String>, HashSet<String>>();
 		for (String gene_i : bindingGenes) {
 			HashSet<String> tf_T = getTFSet(gene_i, p1);
 			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T.toArray(new String[0]));
@@ -47,11 +49,31 @@ public class Main {
 				HashSet<String> genes_G = getGenesForTFs(tf_F, p1);
 				int n = genes_G.size();
 				double sn = SN; //deal with calculating this later
-				double[] c = calculateCenter(genes_G);
-				HashSet<String> genes_M; //= getGenesFor
-				
+				double[] c = calculateCenter(genes_G, sn);
+				HashSet<String> genes_M = new HashSet<String>(); //= getGenesFor
+				if (genes_M.size() > minModuleSize) {
+					completedModules.put(genes_M, tf_F);
+					completedGenes.addAll(genes_M);
+				}
 			}
 		}
+		printModules(completedModules);
+	}
+
+	private static void printModules(
+			HashMap<HashSet<String>, HashSet<String>> completedModules) {
+		for (HashSet<String> geneSet : completedModules.keySet()) {
+			System.out.print("Gene in Module: ");
+			for (String gene: geneSet) {
+				System.out.print(gene + " ");
+			}
+			System.out.print("\nFactors for Module: ");
+			for (String tf: completedModules.get(geneSet)) {
+				System.out.print(tf + " ");
+			}
+			System.out.print("\n\n");
+		}
+		
 	}
 
 	private static HashSet<String> getGenesForTFs(HashSet<String> tf_F, double p) {
