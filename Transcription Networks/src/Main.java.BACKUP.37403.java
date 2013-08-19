@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 public class Main {
 	
+	public final static int maxModuleSize = 3;
 	public static ArrayList<String> bindingGenes;
 	public static ArrayList<String> bindingTFs;
 	public static double[][] bindingData;
@@ -11,8 +12,8 @@ public class Main {
 	public static ArrayList<String> expressionExperiment;
 	public static double[][] expressionData;
 	
-	public static double p1 = .005;
-	public static double p2 = .05;
+	public static final double p1 = .005;
+	public static final double p2 = .05;
 	
 	public static void main(String[] args){
 		readInputs();
@@ -20,10 +21,51 @@ public class Main {
 	}
 	
 	private static void runGRAM() {
+		HashSet<HashSet<String>> exploredTfSets = new HashSet<HashSet<String>>(); 
 		for (String gene_i : bindingGenes) {
-			//HashSet<String> tf_T = getInitialStrictSet(gene_i)
+			HashSet<String> tf_T = getTFSet(gene_i, p1);
+			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T.toArray(new String[0]));
+			for (HashSet<String> tf_F : tf_subsetsofT) {
+				/*for (String s: tf_F) {
+					System.out.print(s + " ");
+				}
+				System.out.println("\n");*/
+				if (exploredTfSets.contains(tf_F)) continue;
+				
+			}
 		}
 	}
+<<<<<<< HEAD
+	
+	private static double[] calculateCenter(HashSet<String> moduleGenes){
+		if(moduleGenes.size()<3){
+			return null;
+		}
+		String[] moduleGenesArray=(String[]) moduleGenes.toArray();
+		
+		for(int i = 0; i<moduleGenesArray.length; i++){
+			for(int j=i+1; j<moduleGenesArray.length;j++){
+				for(int k = j+1; k<moduleGenesArray.length;k++){
+					moduleGenesArray
+				}
+			}
+		}
+		
+		
+		return double[] center;
+	}
+	
+	private static double calculateDistance(double[] geneExpression, double[] center){
+		double distance=0;
+		for(int i = 0; i<geneExpression.length;i++){
+			double tmp = Math.pow((geneExpression[i]-center[i]),2);
+			distance = distance + tmp;
+		}
+		return distance;
+	}
+	
+	
+=======
 
 	private static ArrayList<HashSet<String>> getAllSubsets(String[] tfs) {
 		ArrayList<HashSet<String>> listOfSubsets = new ArrayList<HashSet<String>>();
@@ -56,35 +98,7 @@ public class Main {
 		return tfs;
 	}
 
-	
-	private static double[] calculateCenter(HashSet<String> moduleGenes){
-		if(moduleGenes.size()<3){
-			return null;
-		}
-		String[] moduleGenesArray=(String[]) moduleGenes.toArray();
-		
-		for(int i = 0; i<moduleGenesArray.length; i++){
-			for(int j=i+1; j<moduleGenesArray.length;j++){
-				for(int k = j+1; k<moduleGenesArray.length;k++){
-					moduleGenesArray
-				}
-			}
-		}
-		
-		
-		return double[] center;
-	}
-	
-	private static double calculateDistance(double[] geneExpression, double[] center){
-		double distance=0;
-		for(int i = 0; i<geneExpression.length;i++){
-			double tmp = Math.pow((geneExpression[i]-center[i]),2);
-			distance = distance + tmp;
-		}
-		return distance;
-	}
-	
-	
+>>>>>>> 07df3a2007b2319cd4174e47c64fca9f24a8f14f
 	//hard coding inputs for now
 	public static void readInputs() {
 		bindingGenes = new ArrayList<String>();

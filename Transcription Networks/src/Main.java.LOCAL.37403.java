@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 public class Main {
 	
+	public final static int maxModuleSize = 3;
 	public static ArrayList<String> bindingGenes;
 	public static ArrayList<String> bindingTFs;
 	public static double[][] bindingData;
@@ -24,38 +25,6 @@ public class Main {
 			//HashSet<String> tf_T = getInitialStrictSet(gene_i)
 		}
 	}
-
-	private static ArrayList<HashSet<String>> getAllSubsets(String[] tfs) {
-		ArrayList<HashSet<String>> listOfSubsets = new ArrayList<HashSet<String>>();
-		HashSet<String> currentSet = new HashSet<String>();
-		int size = (int) Math.pow(2, tfs.length);
-		for (int i = size-1; i > 0; i--) {
-			int n = i;
-			int d = 0;
-			while(d < tfs.length) {
-				if (n%2 == 1) {
-					currentSet.add(tfs[d]);
-				}
-				n = n/2;
-				d++;
-			}
-			listOfSubsets.add(currentSet);
-			currentSet = new HashSet<String>(); 
-		}
-		return listOfSubsets;
-	}
-
-	private static HashSet<String> getTFSet(String gene_i, double p) {
-		int index = bindingGenes.indexOf(gene_i);
-		HashSet<String> tfs = new HashSet<String>();
-		for (int i = 0; i < bindingData[index].length; i++) {
-			if (bindingData[index][i] < p) {
-				tfs.add(bindingTFs.get(i));
-			}
-		}
-		return tfs;
-	}
-
 	
 	private static double[] calculateCenter(HashSet<String> moduleGenes){
 		if(moduleGenes.size()<3){
