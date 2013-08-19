@@ -13,8 +13,9 @@ public class Main {
 	public static ArrayList<String> expressionExperiment;
 	public static double[][] expressionData;
 	
-	public static double p1 = .005;
-	public static double p2 = .05;
+	public static final double p1 = .005;
+	public static final double p2 = .05;
+	public static final double SN = .1;
 	
 	public static void main(String[] args){
 		
@@ -32,9 +33,40 @@ public class Main {
 	}
 	
 	private static void runGRAM() {
+		HashSet<HashSet<String>> exploredTfSets = new HashSet<HashSet<String>>();
 		for (String gene_i : bindingGenes) {
-			//HashSet<String> tf_T = getInitialStrictSet(gene_i)
+			HashSet<String> tf_T = getTFSet(gene_i, p1);
+			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T.toArray(new String[0]));
+			for (HashSet<String> tf_F : tf_subsetsofT) {
+				/*for (String s: tf_F) {
+				System.out.print(s + " ");
+				}
+				System.out.println("\n");*/
+				if (exploredTfSets.contains(tf_F)) continue;
+				HashSet<String> genes_G = getGenesForTFs(tf_F, p1);
+				int n = genes_G.size();
+				double sn = SN; //deal with calculating this later
+				double[] c = calculateCenter(genes_G);
+				//HashSet<String> genes_M = getGenesFor
+			}
 		}
+	}
+
+	private static HashSet<String> getGenesForTFs(HashSet<String> tf_F, double p) {
+		HashSet<String> genes = new HashSet<String>();
+		for (String gene : bindingGenes) {
+			boolean add = true;
+			for (String tf : tf_F) {
+				if (bindingData[bindingGenes.indexOf(gene)][bindingTFs.indexOf(tf)] > p) {
+					add = false;
+					break;
+				}
+			}
+			if (add) {
+				genes.add(gene);
+			}
+		}
+		return genes;
 	}
 
 	private static ArrayList<HashSet<String>> getAllSubsets(String[] tfs) {
