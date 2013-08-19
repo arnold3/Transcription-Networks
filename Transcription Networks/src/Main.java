@@ -99,9 +99,6 @@ public class Main {
 		for(int i = 0; i<moduleGenesArray.length; i++){
 			for(int j=i+1; j<moduleGenesArray.length;j++){
 				for(int k = j+1; k<moduleGenesArray.length;k++){
-<<<<<<< HEAD
-					//moduleGenesArray
-=======
 					String[] triplet = {moduleGenesArray[i], moduleGenesArray[j], moduleGenesArray[k]};
 					int[] tripletExpressionIndex = new int[3];
 					for (int l = 0; l<2; l++){
@@ -115,17 +112,12 @@ public class Main {
 						
 					}
 					
->>>>>>> 2f06aa5df64711f424e973a8ac41c3f2b5b83988
 				}
 			}
 		}
 		
 		
-<<<<<<< HEAD
-		return new double[3];
-=======
 		return center;
->>>>>>> 2f06aa5df64711f424e973a8ac41c3f2b5b83988
 	}
 	
 	private static double calculateDistance(double[] geneExpression, double[] center){
