@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class Main {
@@ -16,8 +17,18 @@ public class Main {
 	public static double p2 = .05;
 	
 	public static void main(String[] args){
+		
 		readInputs();
-		runGRAM();
+		//runGRAM();
+		HashSet<String>moduleGenes = new HashSet<String>();
+		moduleGenes.add("G_1");
+		moduleGenes.add("G_2");
+		moduleGenes.add("G_3");
+		moduleGenes.add("G_4");
+		calculateCenter(moduleGenes, 5.0);
+		
+		
+		
 	}
 	
 	private static void runGRAM() {
@@ -58,11 +69,14 @@ public class Main {
 	}
 
 	
-	private static double[] calculateCenter(HashSet<String> moduleGenes){
+	private static double[] calculateCenter(HashSet<String> moduleGenes, double radius){
+		
 		if(moduleGenes.size()<minModuleSize){
 			return null;
 		}
-		String[] moduleGenesArray=(String[]) moduleGenes.toArray();
+		
+		int maxGenes=0;
+		String[] moduleGenesArray=(String[]) moduleGenes.toArray(new String[0]);
 		double[] center = new double[expressionData[0].length];
 		for(int i = 0; i<moduleGenesArray.length; i++){
 			for(int j=i+1; j<moduleGenesArray.length;j++){
@@ -70,23 +84,40 @@ public class Main {
 					String[] triplet = {moduleGenesArray[i], moduleGenesArray[j], moduleGenesArray[k]};
 					int[] tripletExpressionIndex = new int[3];
 					for (int l = 0; l<2; l++){
-						tripletExpressionIndex[l]=expressionGenes.indexOf(moduleGenesArray[l]);
+						tripletExpressionIndex[l]=expressionGenes.indexOf(triplet[l]);
 					}
-					
+					// calculate a temporary center.
+					double[] tmpcenter=new double[expressionData[0].length];
 					for(int m=0; m < expressionData[0].length; m++){
-						center[m]= (1.0/3.0)*(expressionData[tripletExpressionIndex[0]][m]+
+						tmpcenter[m]= (1.0/3.0)*(expressionData[tripletExpressionIndex[0]][m]+
 								expressionData[tripletExpressionIndex[1]][m]+
 								expressionData[tripletExpressionIndex[2]][m]);
 						
 					}
+					//for(int x=0; x<tmpcenter.length;x++){System.out.println(tmpcenter[x]);}
+					for(int n =0; n < moduleGenesArray.length; n++){
+						int geneIndex = expressionGenes.indexOf(moduleGenesArray[n]);
+						int tmp = 0;
+						if (calculateDistance(expressionData[geneIndex], tmpcenter) <= radius){
+							tmp++;
+						}
+						if(tmp>=maxGenes)
+							center = tmpcenter;
+					}
+				
+					
 					
 				}
 			}
 		}
 		
+		for(int i=0; i<center.length; i++){
+			System.out.println(center[i]);
+		}
 		
 		return center;
 	}
+	
 	
 	private static double calculateDistance(double[] geneExpression, double[] center){
 		double distance=0;
@@ -105,22 +136,26 @@ public class Main {
 		bindingData = new double[][] {
 				{.002, .003, .002},
 				{.003, .001, .004},
-				{.004, .004, .04}};
+				{.004, .004, .04},
+				{.4, .005, .04}};
 		expressionGenes = new ArrayList<String>();
 		expressionExperiment = new ArrayList<String>();
 		expressionData = new double[][] {
 				{.002, .003, .002, .002},
 				{.003, .001, .004, .003},
-				{.004, .004, .002, .002}};
+				{.004, .004, .002, .002},
+				{.006, .9, .005, .04}};
 		bindingGenes.add("G_1");
 		bindingGenes.add("G_2");
 		bindingGenes.add("G_3");
+		bindingGenes.add("G_4");
 		bindingTFs.add("TF_A");
 		bindingTFs.add("TF_B");
 		bindingTFs.add("TF_C");
 		expressionGenes.add("G_1");
 		expressionGenes.add("G_2");
 		expressionGenes.add("G_3");
+		expressionGenes.add("G_4");
 		expressionExperiment.add("Ex_1");
 		expressionExperiment.add("Ex_2");
 		expressionExperiment.add("Ex_3");
