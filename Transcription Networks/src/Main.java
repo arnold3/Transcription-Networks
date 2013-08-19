@@ -32,6 +32,7 @@ public class Main {
 	
 	private static void runGRAM() {
 		HashSet<HashSet<String>> exploredTfSets = new HashSet<HashSet<String>>();
+		HashSet<String> completedGenes = new HashSet<String>();
 		for (String gene_i : bindingGenes) {
 			HashSet<String> tf_T = getTFSet(gene_i, p1);
 			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T.toArray(new String[0]));
@@ -45,7 +46,8 @@ public class Main {
 				int n = genes_G.size();
 				double sn = SN; //deal with calculating this later
 				double[] c = calculateCenter(genes_G);
-				//HashSet<String> genes_M = getGenesFor
+				HashSet<String> genes_M; //= getGenesFor
+				
 			}
 		}
 	}
