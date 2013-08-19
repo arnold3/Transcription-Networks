@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 public class Main {
 	
+	public static final int minModuleSize = 3;
 	public static ArrayList<String> bindingGenes;
 	public static ArrayList<String> bindingTFs;
 	public static double[][] bindingData;
@@ -58,21 +59,33 @@ public class Main {
 
 	
 	private static double[] calculateCenter(HashSet<String> moduleGenes){
-		if(moduleGenes.size()<3){
+		if(moduleGenes.size()<minModuleSize){
 			return null;
 		}
 		String[] moduleGenesArray=(String[]) moduleGenes.toArray();
-		
+		double[] center = new double[expressionData[0].length];
 		for(int i = 0; i<moduleGenesArray.length; i++){
 			for(int j=i+1; j<moduleGenesArray.length;j++){
 				for(int k = j+1; k<moduleGenesArray.length;k++){
-					moduleGenesArray
+					String[] triplet = {moduleGenesArray[i], moduleGenesArray[j], moduleGenesArray[k]};
+					int[] tripletExpressionIndex = new int[3];
+					for (int l = 0; l<2; l++){
+						tripletExpressionIndex[l]=expressionGenes.indexOf(moduleGenesArray[l]);
+					}
+					
+					for(int m=0; m < expressionData[0].length; m++){
+						center[m]= (1.0/3.0)*(expressionData[tripletExpressionIndex[0]][m]+
+								expressionData[tripletExpressionIndex[1]][m]+
+								expressionData[tripletExpressionIndex[2]][m]);
+						
+					}
+					
 				}
 			}
 		}
 		
 		
-		return double[] center;
+		return center;
 	}
 	
 	private static double calculateDistance(double[] geneExpression, double[] center){
@@ -81,7 +94,7 @@ public class Main {
 			double tmp = Math.pow((geneExpression[i]-center[i]),2);
 			distance = distance + tmp;
 		}
-		return distance;
+		return Math.sqrt(distance);
 	}
 	
 	
