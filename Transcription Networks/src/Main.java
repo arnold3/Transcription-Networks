@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class Main {
@@ -19,9 +20,30 @@ public class Main {
 	}
 	
 	private static void runGRAM() {
+		HashSet<HashSet<String>> exploredTfSets = new HashSet<HashSet<String>>(); 
 		for (String gene_i : bindingGenes) {
-			//HashSet<String> tf_T = getInitialStrictSet(gene_i)
+			HashSet<String> tf_T = getTFSet(gene_i, p1);
+			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T);
+			//if (exploredTfSets)
 		}
+	}
+
+	private static ArrayList<HashSet<String>> getAllSubsets(HashSet<String> tf_T) {
+		ArrayList<HashSet<String>> listOfSubsets = new ArrayList<HashSet<String>>();
+		HashSet<String> currentSet = new HashSet<String>();
+		
+		return null;
+	}
+
+	private static HashSet<String> getTFSet(String gene_i, double p) {
+		int index = bindingGenes.indexOf(gene_i);
+		HashSet<String> tfs = new HashSet<String>();
+		for (int i = 0; i < bindingData[index].length; i++) {
+			if (bindingData[index][i] < p) {
+				tfs.add(bindingTFs.get(i));
+			}
+		}
+		return tfs;
 	}
 
 	//hard coding inputs for now
