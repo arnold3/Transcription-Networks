@@ -25,10 +25,12 @@ public class Main {
 			HashSet<String> tf_T = getTFSet(gene_i, p1);
 			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T.toArray(new String[0]));
 			for (HashSet<String> tf_F : tf_subsetsofT) {
-				for (String s: tf_F) {
+				/*for (String s: tf_F) {
 					System.out.print(s + " ");
 				}
-				System.out.println("\n");
+				System.out.println("\n");*/
+				if (exploredTfSets.contains(tf_F)) continue;
+				
 			}
 		}
 	}
