@@ -11,8 +11,8 @@ public class Main {
 	public static ArrayList<String> expressionExperiment;
 	public static double[][] expressionData;
 	
-	public static double p1 = .005;
-	public static double p2 = .05;
+	public static final double p1 = .005;
+	public static final double p2 = .05;
 	
 	public static void main(String[] args){
 		readInputs();
@@ -23,16 +23,34 @@ public class Main {
 		HashSet<HashSet<String>> exploredTfSets = new HashSet<HashSet<String>>(); 
 		for (String gene_i : bindingGenes) {
 			HashSet<String> tf_T = getTFSet(gene_i, p1);
-			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T);
-			//if (exploredTfSets)
+			ArrayList<HashSet<String>> tf_subsetsofT = getAllSubsets(tf_T.toArray(new String[0]));
+			for (HashSet<String> tf_F : tf_subsetsofT) {
+				for (String s: tf_F) {
+					System.out.print(s + " ");
+				}
+				System.out.println("\n");
+			}
 		}
 	}
 
-	private static ArrayList<HashSet<String>> getAllSubsets(HashSet<String> tf_T) {
+	private static ArrayList<HashSet<String>> getAllSubsets(String[] tfs) {
 		ArrayList<HashSet<String>> listOfSubsets = new ArrayList<HashSet<String>>();
 		HashSet<String> currentSet = new HashSet<String>();
-		
-		return null;
+		int size = (int) Math.pow(2, tfs.length);
+		for (int i = size-1; i > 0; i--) {
+			int n = i;
+			int d = 0;
+			while(d < tfs.length) {
+				if (n%2 == 1) {
+					currentSet.add(tfs[d]);
+				}
+				n = n/2;
+				d++;
+			}
+			listOfSubsets.add(currentSet);
+			currentSet = new HashSet<String>(); 
+		}
+		return listOfSubsets;
 	}
 
 	private static HashSet<String> getTFSet(String gene_i, double p) {
